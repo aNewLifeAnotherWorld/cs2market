@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CS2 Кейсы и Цены</title>
+  <style>
+    body {
+      background: #121212;
+      color: #eee;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 2.5rem;
+      font-weight: 700;
+    }
+    .case-list {
+      max-width: 600px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    .case-item {
+      background: #222;
+      border-radius: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 20px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.8);
+      transition: background-color 0.3s ease;
+    }
+    .case-item:hover {
+      background: #333;
+    }
+    .case-info {
+      flex-grow: 1;
+      padding-right: 20px;
+    }
+    .case-name {
+      font-size: 1.2rem;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+    .case-price {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #fff;
+      background: #fc6610; /* ярко-зеленый */
+      padding: 6px 14px;
+      border-radius: 10px;
+      width: max-content;
+      font-family: 'Courier New', Courier, monospace;
+      box-shadow: 0 2px 6px rgba(74, 222, 128, 0.7);
+    }
+    .case-img {
+      width: 100px;
+      height: 100px;
+      flex-shrink: 0;
+      border-radius: 10px;
+      background: #333;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+    .case-img img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+    @media (max-width: 650px) {
+  .case-item {
+    flex-direction: row; /* чтобы картинка справа и текст слева */
+    align-items: center;
+    padding: 8px 12px;
+  }
+  .case-info {
+    padding-right: 12px;
+  }
+  .case-name {
+    font-size: 1rem;
+    margin-bottom: 3px;
+  }
+  .case-price {
+    font-size: 1.3rem;
+    padding: 4px 10px;
+  }
+  .case-img {
+    width: 60px;
+    height: 60px;
+    margin: 0;
+  }
+  .case-img img {
+    max-width: 60px;
+    max-height: 60px;
+  }
+}
+    }
+  </style>
+</head>
+<body>
+
+  <h1>📦 CS2 Кейсы и Цены</h1>
+
+  <div class="case-list" id="caseList"></div>
+
+  <script>
+    const cases = [
+      { name: "Кейс «Лихорадка»", price: 86, img: "lihoradka.png" },
+      { name: "Кейс «Грёзы и кошмары»", price: 175.08, img: "grezy_i_kosmary.png" },
+      { name: "Кейс «Киловатт»", price: 52, img: "kilovatt.png" },
+      { name: "Кейс «Революция»", price: 48.77, img: "revolyuciya.png" },
+      { name: "Кейс «Разлом»", price: 29.7, img: "razlom.png" },
+      { name: "Гремучий кейс", price: 24.15, img: "gremuchiy.png" },
+      { name: "Кейс «Запретная зона»", price: 129.67, img: "zapretnaya_zona.png" },
+      { name: "Перчаточный кейс", price: 1348, img: "perchatka.png" },
+      { name: "Оружейный кейс операции «Прорыв»", price: 920, img: "proryv.png" },
+      { name: "Кейс «Спектр 2»", price: 360.66, img: "spectrum_2.png" },
+      { name: "Кейс «Спектр»", price: 496.94, img: "spectrum.png" },
+      { name: "Хромированный кейс #2", price: 411.86, img: "chrome_case_2.png" },
+      { name: "Револьверный кейс", price: 328.16, img: "revolver.png" },
+      { name: "Кейс «Решающий момент»", price: 73.32, img: "reshayuschiy_moment.png" },
+      { name: "Хромированный кейс #3", price: 407, img: "chrome_case_3.png" },
+      { name: "Гамма-кейс #2", price: 437.8, img: "gamma_case_2.png" },
+      { name: "Кейс «Призма 2»", price: 123, img: "prizma_2.png" },
+      { name: "Кейс «Змеиный укус»", price: 39.86, img: "zmeyniy_ukus.png" },
+      { name: "Галерейный кейс", price: 74.89, img: "galereyniy.png" },
+      { name: "Кейс CS20", price: 114.42, img: "cs20.png" },
+      { name: "Кейс операции «Дикое пламя»", price: 362.02, img: "dikoe_plamya.png" },
+      { name: "Кейс «Фальшион»", price: 202.3, img: "falshion.png" },
+      { name: "Оружейный кейс операции «Феникс»", price: 528.05, img: "feniks.png" },
+      { name: "Кейс «Призма»", price: 125.55, img: "prizma.png" },
+      { name: "Гамма кейс", price: 450.25, img: "gamma_case.png" },
+      { name: "Кейс «Горизонт»", price: 170.66, img: "gorizont.png" },
+      { name: "Хромированный оружейный кейс", price: 533.25, img: "chrome_weapon_case.png" },
+      { name: "Охотничий оружейный кейс", price: 1140.34, img: "okhotnichiy.png" },
+      { name: "Тёмный кейс", price: 175.77, img: "temniy.png" },
+      { name: "Кейс операции «Браво»", price: 5082.71, img: "bravo.png" },
+      { name: "Кейс операции «Сломанный клык»", price: 874.42, img: "slomanniy_klyk.png" },
+      { name: "Оружейный кейс операции «Авангард»", price: 431.57, img: "avangard.png" },
+      { name: "Кейс операции «Гидра»", price: 2374.17, img: "gidra.png" },
+    ];
+
+    // Сортируем по цене по возрастанию (сверху самые дешёвые)
+    cases.sort((a, b) => a.price - b.price);
+
+    const container = document.getElementById('caseList');
+
+    cases.forEach(c => {
+      const block = document.createElement('div');
+      block.className = 'case-item';
+
+      block.innerHTML = `
+        <div class="case-info">
+          <div class="case-name">${c.name}</div>
+          <div class="case-price">${c.price.toLocaleString('ru-RU', {style:'currency', currency:'RUB'})}</div>
+        </div>
+        <div class="case-img">
+          <img src="img/${c.img}" alt="${c.name}" onerror="this.style.display='none'" />
+        </div>
+      `;
+
+      container.appendChild(block);
+    });
+  </script>
+
+</body>
+</html>

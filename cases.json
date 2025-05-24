@@ -1,0 +1,20 @@
+[
+  {
+    "name": "Clutch Case",
+    "price": 1.23,
+    "trend": 4.5,
+    "volume": 29340,
+    "avg7": 1.18,
+    "recommendation": "ПРОДАВАТЬ",
+    "image": "https://steamcdn-a.akamaihd.net/apps/730/icons/econ/containers/case_clutch.1234567890.png"
+  },
+  {
+    "name": "Revolution Case",
+    "price": 0.92,
+    "trend": -2.1,
+    "volume": 19400,
+    "avg7": 0.95,
+    "recommendation": "ДЕРЖАТЬ",
+    "image": "https://example.com/revolution.png"
+  }
+]
