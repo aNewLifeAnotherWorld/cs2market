@@ -90,10 +90,13 @@
     }
 
     function toggleCalculator() {
-      const calc = document.getElementById('calculator');
-      calc.classList.toggle('hidden');
-      renderCalculator();
-    }
+  const calc = document.getElementById('calculator');
+  calc.classList.toggle('hidden');
+  if (!calc.classList.contains('hidden')) {
+    renderCalculator();
+    calc.scrollIntoView({ behavior: 'smooth' }); // авто-прокрутка
+  }
+}
 
     function renderCalculator() {
       const container = document.getElementById('calc-cases');
