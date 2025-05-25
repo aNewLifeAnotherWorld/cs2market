@@ -1,137 +1,323 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CS2 Кейсы и Доход</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>📦 CS2 Кейсы</title>
   <style>
-    .case-img { width: 80px; height: 80px; object-fit: contain; }
-    @media (max-width: 640px) {
-      .case-img { width: 50px; height: 50px; }
-      .case-block { flex-direction: column; align-items: start; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      margin: 0;
+      padding: 0;
+      color: #e0e0e0;
+      overflow-x: hidden;
+      background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAJElEQVQYV2N89+7dfwYsQEhIiBEkzJgxY8YgII5EIECIAQAN3QtO9qL/PgAAAABJRU5ErkJggg==');
+      background-repeat: repeat;
+    }
+    .container {
+      max-width: 100%;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+    .header {
+      background-color: rgba(42, 42, 62, 0.9);
+      padding: 15px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 15px;
+    }
+    .header button, .header a {
+      padding: 12px 30px;
+      border: none;
+      border-radius: 10px;
+      font-size: 18px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      color: white;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+    }
+    .header button:hover, .header a:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+    }
+    .update-button {
+      background-color: #ff4c4c;
+    }
+    .update-button:hover {
+      background-color: #e63939;
+    }
+    .calculator-button {
+      background-color: #00cc88;
+    }
+    .calculator-button:hover {
+      background-color: #00b378;
+    }
+    .case {
+      display: flex;
+      align-items: center;
+      background-color: rgba(42, 42, 62, 0.9);
+      margin: 10px 0;
+      padding: 15px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      transition: transform 0.2s;
+    }
+    .case:hover {
+      transform: translateY(-2px);
+    }
+    .case img {
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-right: 15px;
+    }
+    .case-info {
+      flex: 1;
+    }
+    .case-info h3 {
+      margin: 0;
+      font-size: 16px;
+      color: #e0e0e0;
+    }
+    .case-info p {
+      margin: 5px 0 0;
+      color: #a0a0a0;
+      font-size: 14px;
+    }
+    .price-change {
+      width: 20px;
+      height: 20px;
+      margin-left: 10px;
+    }
+    @media (max-width: 600px) {
+      .container {
+        padding: 10px;
+      }
+      .header {
+        flex-direction: row;
+        justify-content: center;
+        gap: 10px;
+      }
+      .header button, .header a {
+        padding: 10px 20px;
+        font-size: 16px;
+      }
+      .case {
+        margin: 5px 0;
+        padding: 10px;
+      }
+      .case img {
+        width: 50px;
+        height: 50px;
+      }
+      .case-info h3 {
+        font-size: 14px;
+      }
+      .case-info p {
+        font-size: 12px;
+      }
+      .price-change {
+        width: 16px;
+        height: 16px;
+      }
     }
   </style>
 </head>
-<body class="bg-gray-900 text-white min-h-screen p-4">
-  <div class="container mx-auto">
-    <div class="flex flex-col sm:flex-row justify-between items-center mb-6">
-      <h1 class="text-3xl font-bold text-center w-full sm:w-auto">📦 CS2 Кейсы и Цены</h1>
-      <button onclick="toggleCalculator()" class="mt-4 sm:mt-0 bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-2 px-4 rounded">
-        📊 Посчитать доход
-      </button>
+<body>
+  <div class="container">
+    <div class="header">
+      <button class="update-button" onclick="updatePrices()">Обновить цены</button>
+      <a href="https://docs.google.com/spreadsheets/d/1TdlbMQDbH9LtcM2Ca1lyP4byxrMoht-WKUNNT8Y4pw0/edit?gid=1972840686#gid=1972840686" class="calculator-button" target="_blank">Доходы</a>
     </div>
-
-    <div id="cases" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
-
-    <div id="calculator" class="hidden mt-12">
-      <h2 class="text-2xl font-bold mb-4">💰 Доход от кейсов</h2>
-      <div id="total" class="text-4xl bg-green-600 text-black font-bold text-center py-4 mb-6 rounded-lg shadow">0 руб.</div>
-      <div id="calc-cases" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+    <div id="cases">
+      <!-- Список кейсов -->
     </div>
   </div>
 
   <script>
-    const caseData = [
-      { name: "Кейс «Лихорадка»", price: 86, image: "lihoradka.png" },
-      { name: "Кейс «Грёзы и кошмары»", price: 175.08, image: "grezy_i_kosmary.png" },
-      { name: "Кейс «Киловатт»", price: 52, image: "kilovatt.png" },
-      { name: "Кейс «Революция»", price: 48.77, image: "revolyuciya.png" },
-      { name: "Кейс «Разлом»", price: 29.7, image: "razlom.png" },
-      { name: "Гремучий кейс", price: 24.15, image: "gremuchiy.png" },
-      { name: "Кейс «Запретная зона»", price: 129.67, image: "zapretnaya_zona.png" },
-      { name: "Перчаточный кейс", price: 1348, image: "perchatka.png" },
-      { name: "Оружейный кейс операции «Прорыв»", price: 920, image: "proryv.png" },
-      { name: "Кейс «Спектр 2»", price: 360.66, image: "spectrum_2.png" },
-      { name: "Кейс «Спектр»", price: 496.94, image: "spectrum.png" },
-      { name: "Хромированный кейс #2", price: 411.86, image: "chrome_case_2.png" },
-      { name: "Револьверный кейс", price: 328.16, image: "revolver.png" },
-      { name: "Кейс «Решающий момент»", price: 73.32, image: "reshayuschiy_moment.png" },
-      { name: "Хромированный кейс #3", price: 407, image: "chrome_case_3.png" },
-      { name: "Гамма-кейс #2", price: 437.8, image: "gamma_case_2.png" },
-      { name: "Кейс «Призма 2»", price: 123, image: "prizma_2.png" },
-      { name: "Кейс «Змеиный укус»", price: 39.86, image: "zmeyniy_ukus.png" },
-      { name: "Галерейный кейс", price: 74.89, image: "galereyniy.png" },
-      { name: "Кейс CS20", price: 114.42, image: "cs20.png" },
-      { name: "Кейс операции «Дикое пламя»", price: 362.02, image: "dikoe_plamya.png" },
-      { name: "Кейс «Фальшион»", price: 202.3, image: "falshion.png" },
-      { name: "Оружейный кейс операции «Феникс»", price: 528.05, image: "feniks.png" },
-      { name: "Кейс «Призма»", price: 125.55, image: "prizma.png" },
-      { name: "Гамма кейс", price: 450.25, image: "gamma_case.png" },
-      { name: "Кейс «Горизонт»", price: 170.66, image: "gorizont.png" },
-      { name: "Хромированный оружейный кейс", price: 533.25, image: "chrome_weapon_case.png" },
-      { name: "Охотничий оружейный кейс", price: 1140.34, image: "okhotnichiy.png" },
-      { name: "Тёмный кейс", price: 175.77, image: "temniy.png" },
-      { name: "Кейс операции «Браво»", price: 5082.71, image: "bravo.png" },
-      { name: "Кейс операции «Сломанный клык»", price: 874.42, image: "slomanniy_klyk.png" },
-      { name: "Оружейный кейс операции «Авангард»", price: 431.57, image: "avangard.png" },
-      { name: "Кейс операции «Гидра»", price: 2374.17, image: "gidra.png" }
+    // Маппинг русских названий на market_hash_name
+    const caseNameMapping = {
+      "Кейс «Лихорадка»": "Danger Zone Case",
+      "Кейс «Грёзы и кошмары»": "Dreams & Nightmares Case",
+      "Кейс «Киловатт»": "Kilowatt Case",
+      "Кейс «Революция»": "Revolution Case",
+      "Кейс «Разлом»": "Fracture Case",
+      "Гремучий кейс": "Snakebite Case",
+      "Кейс «Запретная зона»": "Prisma Case",
+      "Перчаточный кейс": "Glove Case",
+      "Оружейный кейс операции «Прорыв»": "Operation Breakout Weapon Case",
+      "Кейс «Спектр 2»": "Spectrum 2 Case",
+      "Кейс «Спектр»": "Spectrum Case",
+      "Хромированный кейс #2": "Chroma 2 Case",
+      "Револьверный кейс": "Revolver Case",
+      "Кейс «Решающий момент»": "Clutch Case",
+      "Хромированный кейс #3": "Chroma 3 Case",
+      "Гамма-кейс #2": "Gamma 2 Case",
+      "Кейс «Призма 2»": "Prisma 2 Case",
+      "Кейс «Змеиный укус»": "Snakebite Case",
+      "Галерейный кейс": "CS20 Case",
+      "Кейс CS20": "CS20 Case",
+      "Кейс операции «Дикое пламя»": "Operation Wildfire Case",
+      "Кейс «Фальшион»": "Falchion Case",
+      "Оружейный кейс операции «Феникс»": "Operation Phoenix Weapon Case",
+      "Кейс «Призма»": "Prisma Case",
+      "Гамма кейс": "Gamma Case",
+      "Кейс «Горизонт»": "Horizon Case",
+      "Хромированный оружейный кейс": "Chroma Case",
+      "Охотничий оружейный кейс": "Huntsman Weapon Case",
+      "Тёмный кейс": "Shadow Case",
+      "Кейс операции «Браво»": "Operation Bravo Case",
+      "Кейс операции «Сломанный клык»": "Operation Broken Fang Case",
+      "Оружейный кейс операции «Авангард»": "Operation Vanguard Weapon Case",
+      "Кейс операции «Гидра»": "Operation Hydra Case"
+    };
+
+    // Данные о кейсах
+    let caseData = [
+      { name: "Кейс «Лихорадка»", price: 86, prevPrice: 86, image: "img/lihoradka.png" },
+      { name: "Кейс «Грёзы и кошмары»", price: 175.08, prevPrice: 175.08, image: "img/grezy_i_kosmary.png" },
+      { name: "Кейс «Киловатт»", price: 52, prevPrice: 52, image: "img/kilovatt.png" },
+      { name: "Кейс «Революция»", price: 48.77, prevPrice: 48.77, image: "img/revolyuciya.png" },
+      { name: "Кейс «Разлом»", price: 29.7, prevPrice: 29.7, image: "img/razlom.png" },
+      { name: "Гремучий кейс", price: 24.15, prevPrice: 24.15, image: "img/gremuchiy.png" },
+      { name: "Кейс «Запретная зона»", price: 129.67, prevPrice: 129.67, image: "img/zapretnaya_zona.png" },
+      { name: "Перчаточный кейс", price: 1348, prevPrice: 1348, image: "img/perchatka.png" },
+      { name: "Оружейный кейс операции «Прорыв»", price: 920, prevPrice: 920, image: "img/proryv.png" },
+      { name: "Кейс «Спектр 2»", price: 360.66, prevPrice: 360.66, image: "img/spectrum_2.png" },
+      { name: "Кейс «Спектр»", price: 496.94, prevPrice: 496.94, image: "img/spectrum.png" },
+      { name: "Хромированный кейс #2", price: 411.86, prevPrice: 411.86, image: "img/chrome_case_2.png" },
+      { name: "Револьверный кейс", price: 328.16, prevPrice: 328.16, image: "img/revolver.png" },
+      { name: "Кейс «Решающий момент»", price: 73.32, prevPrice: 73.32, image: "img/reshayuschiy_moment.png" },
+      { name: "Хромированный кейс #3", price: 407, prevPrice: 407, image: "img/chrome_case_3.png" },
+      { name: "Гамма-кейс #2", price: 437.8, prevPrice: 437.8, image: "img/gamma_case_2.png" },
+      { name: "Кейс «Призма 2»", price: 123, prevPrice: 123, image: "img/prizma_2.png" },
+      { name: "Кейс «Змеиный укус»", price: 39.86, prevPrice: 39.86, image: "img/zmeyniy_ukus.png" },
+      { name: "Галерейный кейс", price: 74.89, prevPrice: 74.89, image: "img/galereyniy.png" },
+      { name: "Кейс CS20", price: 114.42, prevPrice: 114.42, image: "img/cs20.png" },
+      { name: "Кейс операции «Дикое пламя»", price: 362.02, prevPrice: 362.02, image: "img/dikoe_plamya.png" },
+      { name: "Кейс «Фальшион»", price: 202.3, prevPrice: 202.3, image: "img/falshion.png" },
+      { name: "Оружейный кейс операции «Феникс»", price: 528.05, prevPrice: 528.05, image: "img/feniks.png" },
+      { name: "Кейс «Призма»", price: 125.55, prevPrice: 125.55, image: "img/prizma.png" },
+      { name: "Гамма кейс", price: 450.25, prevPrice: 450.25, image: "img/gamma_case.png" },
+      { name: "Кейс «Горизонт»", price: 170.66, prevPrice: 170.66, image: "img/gorizont.png" },
+      { name: "Хромированный оружейный кейс", price: 533.25, prevPrice: 533.25, image: "img/chrome_weapon_case.png" },
+      { name: "Охотничий оружейный кейс", price: 1140.34, prevPrice: 1140.34, image: "img/okhotnichiy.png" },
+      { name: "Тёмный кейс", price: 175.77, prevPrice: 175.77, image: "img/temniy.png" },
+      { name: "Кейс операции «Браво»", price: 5082.71, prevPrice: 5082.71, image: "img/bravo.png" },
+      { name: "Кейс операции «Сломанный клык»", price: 874.42, prevPrice: 874.42, image: "img/slomanniy_klyk.png" },
+      { name: "Оружейный кейс операции «Авангард»", price: 431.57, prevPrice: 431.57, image: "img/avangard.png" },
+      { name: "Кейс операции «Гидра»", price: 2374.17, prevPrice: 2374.17, image: "img/gidra.png" }
     ];
 
-    let calcCounts = {};
+    // Сортировка кейсов по цене
+    caseData.sort((a, b) => a.price - b.price);
 
-    function renderCases(cases) {
-      const container = document.getElementById('cases');
-      container.innerHTML = '';
+    // Загрузка сохраненных цен из localStorage
+    const savedData = localStorage.getItem('caseData');
+    if (savedData) {
+      const parsedData = JSON.parse(savedData);
+      caseData.forEach(c => {
+        const savedCase = parsedData.find(s => s.name === c.name);
+        if (savedCase) {
+          c.price = savedCase.price;
+          c.prevPrice = savedCase.prevPrice;
+        }
+      });
+      caseData.sort((a, b) => a.price - b.price);
+    }
 
-      cases.sort((a, b) => a.price - b.price);
+    // Загрузка цен из Google Sheets через Apps Script
+    async function loadPrices() {
+      try {
+        const response = await fetch('YOUR_APPS_SCRIPT_URL?method=read');
+        const data = await response.json();
+        if (data.success && data.values) {
+          data.values.forEach(row => {
+            const [name, , price] = row;
+            const caseItem = caseData.find(c => c.name === name);
+            if (caseItem) {
+              caseItem.price = parseFloat(price) || caseItem.price;
+              caseItem.prevPrice = caseItem.prevPrice || caseItem.price;
+            }
+          });
+          caseData.sort((a, b) => a.price - b.price);
+          localStorage.setItem('caseData', JSON.stringify(caseData));
+        }
+      } catch (error) {
+        console.error('Ошибка загрузки цен:', error);
+      }
+      renderCases();
+    }
 
-      cases.forEach(cs => {
-        container.innerHTML += `
-          <div class="case-block bg-gray-800 rounded-2xl shadow-lg p-4 flex items-center gap-4">
-            <img src="img/${cs.image}" alt="${cs.name}" class="case-img rounded" />
-            <div>
-              <h2 class="text-lg font-semibold">${cs.name}</h2>
-              <p class="text-yellow-400 text-xl font-bold">${cs.price} ₽</p>
-            </div>
+    // Отображаем кейсы
+    const casesContainer = document.getElementById('cases');
+    function renderCases() {
+      casesContainer.innerHTML = '';
+      caseData.forEach(c => {
+        const caseElement = document.createElement('div');
+        caseElement.className = 'case';
+        const arrow = c.price > c.prevPrice ? 'img/green.png' : c.price < c.prevPrice ? 'img/red.png' : '';
+        caseElement.innerHTML = `
+          <img src="${c.image}" alt="${c.name}">
+          <div class="case-info">
+            <h3>${c.name}</h3>
+            <p>${c.price.toFixed(2)} руб.</p>
           </div>
+          ${arrow ? `<img src="${arrow}" class="price-change" alt="Price change">` : ''}
         `;
+        casesContainer.appendChild(caseElement);
       });
     }
 
-    function toggleCalculator() {
-  const calc = document.getElementById('calculator');
-  calc.classList.toggle('hidden');
-  if (!calc.classList.contains('hidden')) {
-    renderCalculator();
-    calc.scrollIntoView({ behavior: 'smooth' }); // авто-прокрутка
-  }
-}
-
-    function renderCalculator() {
-      const container = document.getElementById('calc-cases');
-      const totalDisplay = document.getElementById('total');
-      container.innerHTML = '';
-      let total = 0;
-
-      caseData.forEach(cs => {
-        if (!calcCounts[cs.name]) calcCounts[cs.name] = 0;
-        total += calcCounts[cs.name] * cs.price;
-
-        container.innerHTML += `
-          <div class="bg-gray-800 rounded-2xl shadow p-4 flex items-center gap-4">
-            <img src="img/${cs.image}" alt="${cs.name}" class="case-img rounded" />
-            <div class="flex-1">
-              <h3 class="text-md font-bold">${cs.name}</h3>
-              <div class="flex items-center mt-2">
-                <button onclick="changeCount('${cs.name}', -1)" class="bg-red-600 px-3 py-1 rounded font-bold">-</button>
-                <span class="mx-4 text-lg">${calcCounts[cs.name]}</span>
-                <button onclick="changeCount('${cs.name}', 1)" class="bg-green-600 px-3 py-1 rounded font-bold">+</button>
-              </div>
-            </div>
-          </div>
-        `;
-      });
-
-      totalDisplay.textContent = `${total.toFixed(2)} руб.`;
+    // Проверка и обновление цен
+    function checkAndUpdatePrices() {
+      const lastUpdate = localStorage.getItem('lastPriceUpdate');
+      const now = Date.now();
+      const oneDay = 24 * 60 * 60 * 1000; // 24 часа в миллисекундах
+      if (!lastUpdate || now - parseInt(lastUpdate) > oneDay) {
+        updatePrices();
+        localStorage.setItem('lastPriceUpdate', now.toString());
+      }
     }
 
-    function changeCount(name, delta) {
-      calcCounts[name] = Math.max(0, (calcCounts[name] || 0) + delta);
-      renderCalculator();
+    // Обновление цен через Apps Script
+    async function updatePrices() {
+      try {
+        const response = await fetch('YOUR_APPS_SCRIPT_URL?method=updatePrices');
+        const data = await response.json();
+        if (data.success && data.values) {
+          data.values.forEach(row => {
+            const [name, , price] = row;
+            const caseItem = caseData.find(c => c.name === name);
+            if (caseItem) {
+              caseItem.prevPrice = caseItem.price;
+              caseItem.price = parseFloat(price) || caseItem.price;
+              caseItem.price = Math.max(0, Number(caseItem.price.toFixed(2)));
+            }
+          });
+          caseData.sort((a, b) => a.price - b.price);
+          localStorage.setItem('caseData', JSON.stringify(caseData));
+          renderCases();
+        }
+      } catch (error) {
+        console.error('Ошибка обновления цен:', error);
+      }
     }
 
-    renderCases(caseData);
+    // Инициализация
+    loadPrices();
+    checkAndUpdatePrices();
+
+    // Проверка обновления цен при загрузке
+    window.addEventListener('load', checkAndUpdatePrices);
   </script>
 </body>
 </html>
